@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
+import { products } from '../data/products'
 import './Home.css'
 
 const stats = [
@@ -354,6 +355,72 @@ export default function Home() {
                 <p>{desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FEATURED PRODUCTS ────────────── */}
+      <section className="section featured-section">
+        <div className="container">
+          <div className="section-header reveal">
+            <div className="section-tag"><span className="dot" /> Ready-to-Deploy</div>
+            <h2 className="heading-lg">
+              Software we've built, <span className="gradient-text">ready for you</span>
+            </h2>
+            <p className="section-subtitle">
+              Battle-tested platforms across fitness, automotive, education, database, and IT management.
+              Live. Proven. Deployable in under a week.
+            </p>
+          </div>
+
+          <div className="featured-grid">
+            {products.slice(0, 3).map((p, i) => (
+              <Link
+                to={`/products/${p.id}`}
+                key={p.id}
+                className="featured-card card reveal"
+                style={{ '--delay': `${i * 0.1}s` }}
+              >
+                <div className="fc-header">
+                  <div
+                    className="fc-icon"
+                    style={{ background: p.dimColor, border: `1px solid ${p.borderColor}` }}
+                  >
+                    {p.icon}
+                  </div>
+                  <span
+                    className="fc-cat"
+                    style={{ color: p.color, background: p.dimColor, border: `1px solid ${p.borderColor}` }}
+                  >
+                    {p.category}
+                  </span>
+                </div>
+                <h3 className="fc-title">{p.title}</h3>
+                <p className="fc-tagline">{p.tagline}</p>
+                <div className="fc-metrics">
+                  {p.metrics.slice(0, 2).map(m => (
+                    <div key={m.label} className="fc-metric">
+                      <span style={{ color: p.color }}>{m.value}</span>
+                      <span>{m.label}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="fc-arrow" style={{ color: p.color }}>
+                  View Case Study →
+                </div>
+                <div className="fc-bar" style={{ background: `linear-gradient(90deg, ${p.color}, transparent)` }} />
+              </Link>
+            ))}
+          </div>
+
+          <div className="featured-footer reveal" style={{ '--delay': '0.3s' }}>
+            <p>And {products.length - 3} more ready-to-deploy products →</p>
+            <Link to="/products" className="btn-primary">
+              Browse All Products
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </Link>
           </div>
         </div>
       </section>

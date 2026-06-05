@@ -9,6 +9,8 @@ import Services from './pages/Services'
 import Careers from './pages/Careers'
 import Contact from './pages/Contact'
 import Clients from './pages/Clients'
+import Products from './pages/Products'
+import ProductDetail from './pages/ProductDetail'
 import AdminLogin from './pages/AdminLogin'
 import AdminDashboard from './pages/AdminDashboard'
 import './App.css'
@@ -48,6 +50,8 @@ function App() {
           <Route path="/careers" element={<PublicLayout><Careers /></PublicLayout>} />
           <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
           <Route path="/clients" element={<PublicLayout><Clients /></PublicLayout>} />
+          <Route path="/products" element={<PublicLayout><Products /></PublicLayout>} />
+          <Route path="/products/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
 
           {/* Admin */}
           <Route path="/admin" element={<AdminLogin />} />
