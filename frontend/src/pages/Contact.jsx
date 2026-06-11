@@ -168,7 +168,7 @@ export default function Contact() {
                   <div className="method-icon">📞</div>
                   <div>
                     <span className="method-label">Phone</span>
-                    <a href="tel:+918939600098" className="method-value">+91 89396 00098</a>
+                    <a href="tel:+919344983750" className="method-value">+91 89396 00098</a>
                   </div>
                 </div>
                 <div className="contact-method">
@@ -189,7 +189,7 @@ export default function Contact() {
                   <div className="method-icon">📍</div>
                   <div>
                     <span className="method-label">Office</span>
-                    <span className="method-value">No 442, Sidco Industrial Estate, 3rd Main Road, Ambattur, Chennai – 600098</span>
+                    <span className="method-value">153, ROAD STREET ,VANAKAMPADI,VTC:Vanakambadi PO: Damarapakkam, District : Vellore , State : Tamil Nadu , PIN Code : 632504</span>
                   </div>
                 </div>
               </div>
