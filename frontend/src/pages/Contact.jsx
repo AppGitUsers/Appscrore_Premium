@@ -168,7 +168,7 @@ export default function Contact() {
                   <div className="method-icon">📞</div>
                   <div>
                     <span className="method-label">Phone</span>
-                    <a href="tel:+919344983750" className="method-value">+91 89396 00098</a>
+                    <a href="tel:+919344983750" className="method-value">+91 93449 83750</a>
                   </div>
                 </div>
                 <div className="contact-method">
