@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import './Footer.css'
 
-const services = ['IT Consulting', 'Database Support', 'Corporate Training', 'Staffing Solutions', 'Internship Programs', 'Software Development']
+const services = ['Business Websites', 'Web Applications', 'Mobile Applications', 'CRM & Business Automation', 'SaaS Development', 'Enterprise Software', 'n8n Automation']
 const company = ['About Us', 'Careers', 'Clients', 'Blog', 'Contact']
 
 export default function Footer() {

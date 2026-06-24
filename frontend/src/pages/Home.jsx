@@ -12,46 +12,53 @@ const stats = [
 
 const services = [
   {
-    icon: '⚡',
-    title: 'IT Consulting',
-    desc: 'Strategic technology advice that transforms how your business operates and scales globally.',
+    icon: '🌐',
+    title: 'Business Websites',
+    desc: 'High-performance websites that build credibility, generate leads, and help businesses establish a powerful online presence.',
     accent: 'rgba(30,91,206,0.55)',
-    tag: 'Strategy',
+    tag: 'Web Presence',
   },
   {
-    icon: '🗄️',
-    title: 'Database Support',
-    desc: 'Expert DBA services for Oracle, SQL Server, MySQL, PostgreSQL — tuning to full migration.',
+    icon: '⚙️',
+    title: 'Web Applications',
+    desc: 'Custom web platforms, dashboards, portals, and management systems designed for scalability and seamless user experiences.',
     accent: 'rgba(45,124,246,0.5)',
-    tag: 'DBA',
+    tag: 'Web Apps',
   },
   {
-    icon: '🎓',
-    title: 'Corporate Training',
-    desc: 'Industry-led programs in Data Engineering, AI/ML, Cloud, and Full-Stack. Real-world, not theory.',
+    icon: '📱',
+    title: 'Mobile Applications',
+    desc: 'Cross-platform and native mobile apps for iOS and Android, built to deliver speed, reliability, and engagement.',
     accent: 'rgba(14,165,233,0.5)',
-    tag: 'Upskilling',
+    tag: 'Mobile',
+  },
+  {
+    icon: '🔄',
+    title: 'CRM & Business Automation',
+    desc: 'Streamline operations with custom CRM solutions and workflow automation that reduce manual effort and improve productivity.',
+    accent: 'rgba(59,130,246,0.5)',
+    tag: 'Automation',
   },
   {
     icon: '🚀',
-    title: 'Staffing & Recruitment',
-    desc: 'Hire vetted IT professionals fast. Permanent, contract, or remote — screened and ready.',
-    accent: 'rgba(59,130,246,0.5)',
-    tag: 'Talent',
-  },
-  {
-    icon: '💻',
-    title: 'Software Development',
-    desc: 'Full-stack web and mobile applications built for scale, speed, and long-term maintainability.',
+    title: 'SaaS Development',
+    desc: 'End-to-end SaaS product development—from architecture and multi-tenant systems to deployment and scaling.',
     accent: 'rgba(30,91,206,0.55)',
-    tag: 'Engineering',
+    tag: 'SaaS',
   },
   {
-    icon: '🌱',
-    title: 'Internship Program',
-    desc: 'Hands-on training in data pipelines, cloud platforms, and enterprise tools. Mentored by industry veterans.',
+    icon: '🏢',
+    title: 'Enterprise Software',
+    desc: 'Robust enterprise-grade software solutions tailored for complex business processes, integrations, and large-scale operations.',
+    accent: 'rgba(45,124,246,0.5)',
+    tag: 'Enterprise',
+  },
+  {
+    icon: '🤖',
+    title: 'n8n Automation',
+    desc: 'Connect apps, automate workflows, and eliminate repetitive tasks using powerful n8n-based automation solutions.',
     accent: 'rgba(14,165,233,0.5)',
-    tag: 'Training',
+    tag: 'Integration',
   },
 ]
 
@@ -112,12 +119,12 @@ function useReveal() {
 export default function Home() {
   const heroRef  = useRef(null)
   const glowRef  = useRef(null)
+  const rafIdRef = useRef(null)
   useReveal()
 
   const handleMouse = useCallback(e => {
-    let rafId
-    cancelAnimationFrame(rafId)
-    rafId = requestAnimationFrame(() => {
+    cancelAnimationFrame(rafIdRef.current)
+    rafIdRef.current = requestAnimationFrame(() => {
       if (!heroRef.current || !glowRef.current) return
       const rect = heroRef.current.getBoundingClientRect()
       glowRef.current.style.left = `${((e.clientX - rect.left) / rect.width) * 100}%`
@@ -147,7 +154,7 @@ export default function Home() {
         <div className="container hero-inner">
           <div className="hero-badge">
             <span className="dot" />
-            Now accepting new clients — 2024
+            Now accepting new clients — 2026
           </div>
 
           <h1 className="hero-title">
@@ -414,7 +421,7 @@ export default function Home() {
           </div>
 
           <div className="featured-footer reveal" style={{ '--delay': '0.3s' }}>
-            <p>And {products.length - 3} more ready-to-deploy products →</p>
+            <p>And {Math.max(0, products.length - 3)} more ready-to-deploy products →</p>
             <Link to="/products" className="btn-primary">
               Browse All Products
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

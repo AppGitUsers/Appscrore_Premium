@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { products, categories } from '../data/products'
 import './Products.css'
 
 export default function Products() {
+  const navigate = useNavigate()
   const [active, setActive] = useState('All')
 
   const filtered = active === 'All'
@@ -78,74 +79,78 @@ export default function Products() {
               <article
                 key={product.id}
                 className="product-card card reveal"
-                style={{ '--delay': `${i * 0.08}s` }}
+                style={{ '--delay': `${i * 0.08}s`, '--card-color': product.color, cursor: 'pointer' }}
+                onClick={() => navigate(`/products/${product.id}`)}
               >
-                {/* Card top */}
-                <div className="pc-top">
-                  <div
-                    className="pc-icon"
-                    style={{
-                      background: product.dimColor,
-                      border: `1px solid ${product.borderColor}`,
-                    }}
-                  >
-                    <span>{product.icon}</span>
+                {/* Visual header band */}
+                <div
+                  className="pc-visual"
+                  style={{ background: `linear-gradient(145deg, ${product.dimColor} 0%, ${product.color}28 100%)`, borderBottom: `1px solid ${product.borderColor}` }}
+                >
+                  <div className="pc-visual-inner">
+                    <div className="pc-visual-icon" style={{ background: product.color + '18', border: `1.5px solid ${product.borderColor}` }}>
+                      {product.icon}
+                    </div>
+                    <span className="pc-visual-cat" style={{ color: product.color }}>{product.category}</span>
                   </div>
-                  <div className="pc-meta">
-                    <span
-                      className="pc-category"
-                      style={{ color: product.color, background: product.dimColor, border: `1px solid ${product.borderColor}` }}
-                    >
-                      {product.category}
-                    </span>
+                  {product.badge && (
+                    <span className="pc-badge" style={{ background: product.color }}>{product.badge}</span>
+                  )}
+                </div>
+
+                {/* Card body */}
+                <div className="pc-body">
+                  <div className="pc-title-row">
+                    <h2 className="pc-title">{product.title}</h2>
                     <span className="pc-year">{product.year}</span>
                   </div>
-                </div>
+                  <p className="pc-tagline">{product.tagline}</p>
 
-                {/* Content */}
-                <h2 className="pc-title">{product.title}</h2>
-                <p className="pc-tagline">{product.tagline}</p>
+                  {/* Metrics */}
+                  <div className="pc-metrics">
+                    {product.metrics.map(m => (
+                      <div key={m.label} className="pc-metric">
+                        <span className="pcm-val" style={{ color: product.color }}>{m.value}</span>
+                        <span className="pcm-lbl">{m.label}</span>
+                      </div>
+                    ))}
+                  </div>
 
-                {/* Metrics */}
-                <div className="pc-metrics">
-                  {product.metrics.map(m => (
-                    <div key={m.label} className="pc-metric">
-                      <span className="pcm-val" style={{ color: product.color }}>{m.value}</span>
-                      <span className="pcm-lbl">{m.label}</span>
-                    </div>
-                  ))}
-                </div>
+                  {/* Tech stack */}
+                  <div className="pc-tech">
+                    {product.tech.map(t => (
+                      <span key={t} className="pc-tech-pill">{t}</span>
+                    ))}
+                  </div>
 
-                {/* Tech stack */}
-                <div className="pc-tech">
-                  {product.tech.map(t => (
-                    <span key={t} className="pc-tech-pill">{t}</span>
-                  ))}
-                </div>
+                  {/* Deploy time */}
+                  <div className="pc-deploy-time" style={{ color: product.color }}>
+                    ⚡ Ready to deploy in under a week
+                  </div>
 
-                {/* Actions */}
-                <div className="pc-actions">
-                  <Link
-                    to={`/products/${product.id}`}
-                    className="pc-btn-primary"
-                    style={{ background: product.color }}
-                  >
-                    View Case Study →
-                  </Link>
-                  <Link
-                    to={`/contact?product=${product.id}`}
-                    className="pc-btn-outline"
-                    style={{ borderColor: product.borderColor, color: product.color }}
-                  >
-                    Request This
-                  </Link>
+                  {/* Actions */}
+                  <div className="pc-actions">
+                    <Link
+                      to={`/contact?product=${product.id}`}
+                      className="pc-btn-request"
+                      style={{ background: product.color }}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      Request This Product →
+                    </Link>
+                    <Link
+                      to={`/products/${product.id}`}
+                      className="pc-btn-case"
+                      style={{ color: product.color }}
+                      onClick={e => e.stopPropagation()}
+                    >
+                      View Case Study
+                    </Link>
+                  </div>
                 </div>
 
                 {/* Bottom accent bar */}
-                <div
-                  className="pc-accent-bar"
-                  style={{ background: `linear-gradient(90deg, ${product.color}, transparent)` }}
-                />
+                <div className="pc-accent-bar" style={{ background: `linear-gradient(90deg, ${product.color}, transparent)` }} />
               </article>
             ))}
           </div>

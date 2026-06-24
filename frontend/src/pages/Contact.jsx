@@ -1,30 +1,70 @@
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { submitLead } from '../lib/api'
 import { useToast } from '../context/ToastContext'
+import { products } from '../data/products'
 import './Contact.css'
 
 const SERVICES = [
-  'IT Consulting',
-  'Database Support',
-  'Corporate Training',
-  'Staffing & Recruitment',
-  'Software Development',
-  'Internship Program',
+  'Business Websites',
+  'Web Applications',
+  'Mobile Applications',
+  'CRM & Business Automation',
+  'SaaS Development',
+  'Enterprise Software',
+  'n8n Automation',
+  'Ready-to-Deploy Product',
   'General Enquiry',
 ]
 
 const BUDGETS   = ['< ₹50K', '₹50K – ₹2L', '₹2L – ₹10L', '₹10L+', 'Not Sure']
 const TIMELINES = ['ASAP', '1 – 3 months', '3 – 6 months', '6 + months', 'Flexible']
 
-const EMPTY = { name:'', email:'', phone:'', company:'', service:'', budget:'', timeline:'', message:'' }
+const EMPTY = { name:'', email:'', phone:'', company:'', service:'', budget:'', timeline:'', message:'', productName:'' }
+
+function buildInitialForm(productId) {
+  if (!productId) return EMPTY
+  const p = products.find(prod => prod.id === productId)
+  if (!p) return EMPTY
+  return {
+    ...EMPTY,
+    service: 'Ready-to-Deploy Product',
+    timeline: 'ASAP',
+    productName: p.title,
+    message: `Hi, I'm interested in ${p.title}.\n\n${p.tagline}\n\nPlease share deployment details and next steps.`,
+  }
+}
 
 export default function Contact() {
-  const [form, setForm]       = useState(EMPTY)
+  const [searchParams] = useSearchParams()
+  const [form, setForm]       = useState(() => buildInitialForm(searchParams.get('product')))
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const toast = useToast()
 
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }))
+
+  const handleServiceChange = e => {
+    const service = e.target.value
+    setForm(f => ({
+      ...f,
+      service,
+      productName: service === 'Ready-to-Deploy Product' ? f.productName : '',
+      timeline:    service === 'Ready-to-Deploy Product' ? f.timeline    : '',
+    }))
+  }
+
+  const handleProductSelect = e => {
+    const title = e.target.value
+    const p = products.find(prod => prod.title === title)
+    if (!p) return
+    setForm(f => ({
+      ...f,
+      productName: p.title,
+      timeline: 'ASAP',
+      message: f.message || `Hi, I'm interested in ${p.title}.\n\n${p.tagline}\n\nPlease share deployment details and next steps.`,
+    }))
+  }
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -40,7 +80,7 @@ export default function Contact() {
     }
   }
 
-  const reset = () => { setSubmitted(false); setForm(EMPTY) }
+  const reset = () => { setSubmitted(false); setForm(EMPTY); searchParams.delete('product') }
 
   return (
     <main style={{ paddingTop: '80px' }}>
@@ -102,19 +142,33 @@ export default function Contact() {
                   <div className="form-row">
                     <div className="form-group">
                       <label>I'm Interested In</label>
-                      <select value={form.service} onChange={set('service')}>
-                        <option value="">Select a service</option>
+                      <select value={form.service} onChange={handleServiceChange}>
+                        <option value="" disabled>Select a service</option>
                         {SERVICES.map(s => <option key={s}>{s}</option>)}
                       </select>
                     </div>
                     <div className="form-group">
                       <label>Timeline</label>
-                      <select value={form.timeline} onChange={set('timeline')}>
-                        <option value="">Select timeline</option>
+                      <select value={form.timeline} onChange={set('timeline')} disabled={!!form.productName}>
+                        <option value="" disabled>Select timeline</option>
                         {TIMELINES.map(t => <option key={t}>{t}</option>)}
                       </select>
                     </div>
                   </div>
+
+                  {form.service === 'Ready-to-Deploy Product' && (
+                    <div className="form-group">
+                      <label>Select Product</label>
+                      {form.productName ? (
+                        <input type="text" value={form.productName} readOnly />
+                      ) : (
+                        <select value="" onChange={handleProductSelect}>
+                          <option value="" disabled>Choose a product</option>
+                          {products.map(p => <option key={p.id} value={p.title}>{p.title}</option>)}
+                        </select>
+                      )}
+                    </div>
+                  )}
 
                   <div className="form-group">
                     <label>Budget Range</label>
@@ -125,6 +179,7 @@ export default function Contact() {
                           key={b}
                           className={`budget-btn ${form.budget === b ? 'selected' : ''}`}
                           onClick={() => setForm(f => ({ ...f, budget: b }))}
+                          disabled={!!form.productName}
                         >
                           {b}
                         </button>

@@ -2,85 +2,94 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import './Services.css'
 
-const categories = ['All', 'Training', 'Consulting', 'Staffing', 'Development']
+const categories = ['All', 'Development', 'Design']
 
 const services = [
   {
     id: 1,
-    category: 'Training',
-    icon: '🗄️',
-    title: 'Database Management & Admin',
-    desc: 'Deep-dive training in MS-SQL, Oracle, MySQL, PostgreSQL, and NoSQL databases.',
-    features: ['Installation & Migration', 'Performance Tuning', 'Backup & Recovery', 'Security & Compliance'],
-    accent: '#6c63ff',
-    badge: 'Most Popular',
+    category: 'Development',
+    icon: '⬡',
+    title: 'Web Applications',
+    desc: 'Complex, scalable platforms — CRMs, ERPs, dashboards, portals. We architect systems that handle millions of users without breaking a sweat.',
+    features: [
+      'Custom Architecture',
+      'Real-time Data',
+      'Role-based Access',
+      'API Integrations'
+    ],
+    accent: '#6c63ff'
   },
   {
     id: 2,
-    category: 'Training',
-    icon: '☁️',
-    title: 'Cloud Computing & DevOps',
-    desc: 'Hands-on training in AWS, Azure, GCP, Docker, and Kubernetes.',
-    features: ['Cloud Architecture', 'CI/CD Pipelines', 'Container Orchestration', 'Serverless'],
-    accent: '#00f5ff',
+    category: 'Development',
+    icon: '◈',
+    title: 'Mobile Applications',
+    desc: 'Native-feel cross-platform apps for iOS and Android. From patient management to fleet tracking — mobile experiences people actually use daily.',
+    features: [
+      'iOS & Android',
+      'Offline-first',
+      'Push Notifications',
+      'Biometric Auth'
+    ],
+    accent: '#00f5ff'
   },
   {
     id: 3,
-    category: 'Training',
-    icon: '🤖',
-    title: 'AI & Machine Learning',
-    desc: 'Coding with Gen AI, ChatGPT, Python ML, and real-world model deployment.',
-    features: ['Python for ML', 'GenAI & Prompt Eng.', 'Model Deployment', 'Data Analytics'],
-    accent: '#ff6584',
-    badge: 'Trending',
+    category: 'Development',
+    icon: '◉',
+    title: 'Business Websites',
+    desc: 'Your website is your best salesperson. We design high-converting sites that generate leads, build trust, and make competitors look amateur.',
+    features: [
+      'Conversion-optimized',
+      'CMS Integration',
+      'SEO-ready',
+      'Analytics'
+    ],
+    accent: '#ff6584'
   },
   {
     id: 4,
-    category: 'Training',
-    icon: '⚛️',
-    title: 'Full-Stack Development',
-    desc: 'Java, Python, JavaScript, React, Angular, Node.js — from zero to production.',
-    features: ['Frontend: React/Angular', 'Backend: Node/Java/Python', 'REST APIs', 'Testing & Deployment'],
-    accent: '#43e97b',
+    category: 'Development',
+    icon: '◆',
+    title: 'CRM & ERP Systems',
+    desc: 'Replace spreadsheet chaos with intelligent business tools. Custom-built to your exact workflow — not the other way around.',
+    features: [
+      'Workflow Automation',
+      'Custom Reports',
+      'Multi-user Roles',
+      'SMS & Email Triggers'
+    ],
+    accent: '#43e97b'
   },
   {
     id: 5,
-    category: 'Consulting',
-    icon: '🗃️',
-    title: 'Database Support & Consulting',
-    desc: 'Expert DBA services to keep your database healthy, fast, and secure.',
-    features: ['DB Installation & Migration', 'High Availability Setup', 'Performance Troubleshooting', 'Compliance Management'],
-    accent: '#6c63ff',
+    category: 'Development',
+    icon: '◇',
+    title: 'E-Commerce Platforms',
+    desc: 'High-performance storefronts built to scale. From D2C brands to B2B catalogues — commerce engines that turn traffic into revenue.',
+    features: [
+      'Custom Storefront',
+      'Inventory Sync',
+      'Payment Gateway',
+      'Cart Recovery'
+    ],
+    accent: '#f9cb28'
   },
   {
     id: 6,
-    category: 'Consulting',
-    icon: '💡',
-    title: 'IT Consulting',
-    desc: 'Strategic technology advice to transform your business with the right tools.',
-    features: ['Tech Stack Advisory', 'Digital Transformation', 'Architecture Review', 'Cost Optimization'],
-    accent: '#ff6584',
-  },
-  {
-    id: 7,
-    category: 'Staffing',
-    icon: '👥',
-    title: 'IT Staffing & Recruitment',
-    desc: 'Hire pre-vetted IT talent — permanent, contract, or remote.',
-    features: ['Technical Screening', 'Interview Support', 'Remote & On-Site Talent', 'Permanent & Contract'],
-    accent: '#43e97b',
-  },
-  {
-    id: 8,
-    category: 'Development',
-    icon: '🛠️',
-    title: 'Custom Software Development',
-    desc: 'End-to-end software products tailored to your business needs.',
-    features: ['MVP Development', 'Enterprise Apps', 'API Development', 'Maintenance & Support'],
-    accent: '#00f5ff',
-  },
+    category: 'Design',
+    icon: '◎',
+    title: 'UI/UX Design',
+    desc: 'Design that makes users lean forward. Every pixel serves a purpose. Complex workflows become intuitive experiences that feel effortless.',
+    features: [
+      'User Research',
+      'Wireframing',
+      'Prototyping',
+      'Design Systems'
+    ],
+    accent: '#ff4d6d'
+  }
 ]
-
 export default function Services() {
   const [active, setActive] = useState('All')
 
@@ -118,9 +127,8 @@ export default function Services() {
 
           {/* Services Grid */}
           <div className="services-full-grid">
-            {filtered.map(({ id, icon, title, desc, features, accent, badge }) => (
+            {filtered.map(({ id, icon, title, desc, features, accent }) => (
               <div key={id} className="service-full-card card" style={{ '--accent': accent }}>
-                {badge && <span className="service-badge">{badge}</span>}
                 <div className="sf-header">
                   <div className="sf-icon">{icon}</div>
                   <h3 className="sf-title">{title}</h3>

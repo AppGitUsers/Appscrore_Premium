@@ -2,6 +2,7 @@ export const products = [
   {
     id: 'fitdesk-pro',
     title: 'FitDesk Pro',
+    badge: 'Most Popular',
     category: 'Fitness Management',
     year: '2023',
     tagline: 'Complete gym and fitness centre management — members, billing, class scheduling, all in one platform.',

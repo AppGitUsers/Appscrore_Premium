@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { submitLead } from '../lib/api'
+import { useToast } from '../context/ToastContext'
 import './Careers.css'
 
 const openings = [
@@ -28,14 +30,34 @@ const perks = [
 
 export default function Careers() {
   const [applyFor, setApplyFor] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', role: '', experience: '', message: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', experience: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const toast = useToast()
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => { setApplyFor(null); setSubmitted(false) }, 2000)
+    setLoading(true)
+    try {
+      await submitLead({
+        name:     form.name,
+        email:    form.email,
+        phone:    form.phone,
+        company:  '',
+        service:  'Career Application',
+        budget:   '',
+        timeline: '',
+        message:  `Role: ${applyFor.title}\nExperience: ${form.experience || 'Not specified'}\n\n${form.message}`,
+      })
+      setSubmitted(true)
+    } catch (err) {
+      toast(err.message || 'Something went wrong. Please try again.', 'error')
+    } finally {
+      setLoading(false)
+    }
   }
+
+  const closeModal = () => { setApplyFor(null); setSubmitted(false); setForm({ name: '', email: '', phone: '', experience: '', message: '' }) }
 
   return (
     <main style={{ paddingTop: '80px' }}>
@@ -131,19 +153,20 @@ export default function Careers() {
 
       {/* APPLY MODAL */}
       {applyFor && (
-        <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) setApplyFor(null) }}>
+        <div className="modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) closeModal() }}>
           <div className="modal">
             {submitted ? (
               <div className="modal-success">
                 <div className="success-icon">🎉</div>
                 <h2>Application Sent!</h2>
                 <p>We'll reach out within 2 business days.</p>
+                <button className="btn-outline" style={{ marginTop: '20px' }} onClick={closeModal}>Close</button>
               </div>
             ) : (
               <>
                 <div className="modal-header">
                   <h2>Apply for <span className="gradient-text">{applyFor.title}</span></h2>
-                  <button className="modal-close" onClick={() => setApplyFor(null)}>✕</button>
+                  <button className="modal-close" onClick={closeModal}>✕</button>
                 </div>
                 <form className="apply-form" onSubmit={handleSubmit}>
                   <div className="form-row">
@@ -177,9 +200,8 @@ export default function Careers() {
                     <label>Why Appscore?</label>
                     <textarea rows="4" placeholder="Tell us why you'd be a great fit..." value={form.message} onChange={e => setForm({...form, message: e.target.value})} />
                   </div>
-                  <button type="submit" className="btn-primary form-submit">
-                    Submit Application
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  <button type="submit" className="btn-primary form-submit" disabled={loading}>
+                    {loading ? <><span className="spinner" /> Sending…</> : <>Submit Application <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></>}
                   </button>
                 </form>
               </>
